@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Multiplication Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            background-color: #ff4c4c;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff0000;
+        }
+        .highlight {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Dynamic Multiplication Table</h1>
+
+<div class="container">
+    <label for="numberInput">Enter a number (n):</label>
+    <input type="number" id="numberInput" min="1" value="12">
+    <button onclick="generateTable()">Generate Table</button>
+</div>
+
+<div id="tableContainer"></div>
+
+<script>
+    function generateTable() {
+        const n = document.getElementById('numberInput').value;
+        const tableContainer = document.getElementById('tableContainer');
+        
+        // Clear the previous table
+        tableContainer.innerHTML = '';
+
+        // Create the table element
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        // Create table header row (1 to 12)
+        const headerRow = document.createElement('tr');
+        const firstHeader = document.createElement('th');
+        firstHeader.textContent = '*'; // First cell is an asterisk for multiplication
+        headerRow.appendChild(firstHeader);
+
+        for (let i = 1; i <= 12; i++) {
+            const th = document.createElement('th');
+            th.textContent = i;
+            headerRow.appendChild(th);
+        }
+        headerRow.appendChild(document.createElement('th')); // Empty space for delete button column
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table body (multiplication table)
+        for (let i = 1; i <= n; i++) {
+            const row = document.createElement('tr');
+
+            // First column (row header)
+            const rowHeader = document.createElement('th');
+            rowHeader.textContent = i;
+            row.appendChild(rowHeader);
+
+            // Multiplication cells
+            for (let j = 1; j <= 12; j++) {
+                const cell = document.createElement('td');
+                cell.textContent = `${i * j}`;
+                row.appendChild(cell);
+            }
+
+            // Delete button column
+            const deleteButtonCell = document.createElement('td');
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete Row';
+            deleteButton.addEventListener('click', () => {
+                row.remove(); // Remove the row when the button is clicked
+            });
+            deleteButtonCell.appendChild(deleteButton);
+            row.appendChild(deleteButtonCell);
+
+            // Event handler for hover effect (highlight the row)
+            row.addEventListener('mouseenter', () => {
+                row.classList.add('highlight'); // Change background and text color
+            });
+
+            row.addEventListener('mouseleave', () => {
+                row.classList.remove('highlight'); // Revert back to default
+            });
+
+            tbody.appendChild(row);
+        }
+
+        table.appendChild(tbody);
+        tableContainer.appendChild(table);
+    }
+</script>
+
+</body>
+</html>
